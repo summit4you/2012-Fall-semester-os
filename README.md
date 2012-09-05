@@ -9,7 +9,8 @@ Author: [summit.chiu](mailto:809104518@qq.com)
 内容(建议安装[githml](http://ryt.github.com/githtml/)在线浏览)
 ===========================================================
 
-[第一章 绪论](2012-Fall-semester-os/tree/master/PPT/1.html5.html "第一章 绪论")
+ - [第一章 绪论](2012-Fall-semester-os/tree/master/PPT/1.html5.html)
+ - [第二章 操作系统用户界面](2012-Fall-semester-os/tree/master/PPT/2.html5.html)
 
 教材
 ===
