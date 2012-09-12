@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Chrome DevRel Team (chrome-devrel@googlegroups.com)
+                 Alex Russell (slightlyoff@chromium.org)
+                 Brad Neuberg
+-->
+
+<!-- GB: modifications for s9 template pack:
+ 
+  o removed offline manifest
+  o removed disclaimer; it's just a prototype anyway
+  o removed google analytics script code
+  o removed google maps script code
+  o removed all slides
+
+  o in js/utils.js changed line 541pp queryAll('.transitionSlide')
+ 
+     - looks for h1 (not h2) and doesn't include img (icon)
+
+  o in styles/commons.css commented out rules for li and bullets
+ 
+   li {
+    list-style: none;
+    padding: 10px 0;
+   }
+   .bullets {
+  font-size: 40px;
+  }
+  .bullets li::before {
+    content: '· ';
+  }
+-->
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" />
+    <title>操作系统</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono" rel="stylesheet" type="text/css" />
+    <link id="prettify-link" href="src/prettify/prettify.css" rel="stylesheet" disabled />
+    <link href="styles/fonts.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="styles/presentation.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="styles/common.css" rel="stylesheet" type="text/css" media="screen" />
+    <link class="theme" href="styles/default.css" rel="stylesheet" type="text/css" media="screen" />
+    <link class="theme" href="styles/moon.css" rel="stylesheet" type="text/css" media="screen" />
+    <link class="theme" href="styles/sand.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link class="theme" href="styles/sea_wave.css" rel="stylesheet" type="text/css" media="screen"/>
+  </head>
+  <body>
+    <div id="flex-container">
+    <nav id="helpers">
+      <button title="Previous slide" id="nav-prev" class="nav-prev">&#8701;</button> 
+      <button title="Jump to a random slide" id="slide-no">5</button> 
+      <button title="Next slide" id="nav-next" class="nav-next">&#8702;</button>
+      <menu>
+        <button type="checkbox" data-command="toc" title="Table of Contents" class="toc">TOC</button>
+        <!-- <button type="checkbox" data-command="resources" title="View Related Resources">&#9734;</button> -->
+        <button type="checkbox" data-command="notes" title="View Slide Notes">&#9999;</button>
+        <button type="checkbox" data-command="source" title="View slide source">&#8635;</button>
+        <button type="checkbox" data-command="help" title="View Help">?</button>
+      </menu>
+    </nav>
+    <div class="slides">
+      <div id="presentation-counter">Loading...</div>
+        <div class="slide" id="landing-slide">
+          <section class="middle">
+            <p>This presentation is an HTML5 website</p>
+            <p>Press <span id="left-init-key" class="key">&rarr;</span> key to advance.</p>
+          </section>
+          <aside class="note">
+            <section>
+              Welcome! (This field is for speaker notes and commentary.)
+            </section>
+          </aside> 
+        </div>
+
+        <div class="slide" id="controls-slide">
+          <header>Slides controls</header>
+          <section>
+            <ul>
+              <li><span class="key">&larr;</span> and <span class="key">&rarr;</span> to move around.</li>
+              <li><span class="key">Ctrl/Command</span> and <span class="key">+</span> or <span class="key">-</span> to zoom in and out if slides don’t fit.</li>
+              <li><span class="key">S</span> to view page source.</li>
+              <li><span class="key">T</span> to change the theme.</li>
+              <li><span class="key">H</span> to toggle syntax highlight.</li>
+              <li><span class="key">N</span> to toggle speaker notes.</li>
+              <li><span class="key">3</span> to toggle 3D effect.</li>
+              <li><span class="key">0</span> to toggle help.</li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="slide" id="title-slide">
+          <section class="middle">
+            <hgroup>
+              <h1>
+                操作系统
+              </h1>
+              <h2>
+                进程管理
+              </h2>
+            </hgroup>
+          </section>
+        </div>
+
+        <div class="slide" id="table-of-contents">
+          <header><h1>Agenda - Table of Contents</h1></header>
+          <section>
+            <ul id="toc-list">
+            </ul>
+          </section>
+        </div>
+
+
+        
+        <div class="slide transitionSlide" id="slide2">
+          <header><h1 id="section">3.1 进程的概念</h1></header>
+          <section>
+              <!-- === begin markdown block =====================================================
+
+      generated by markdown 1.0.0 on Ruby 1.8.7 (2012-06-29) [i386-mingw32]
+                on Wed Sep 12 23:15:36 +0800 2012 with Markdown engine kramdown (0.13.8)
+                  using options { !to be done! }
+  -->
+
+<!-- _S9SLIDE_ -->
+<h1 id="section">3.1 进程的概念</h1>
+
+<h4 id="section-1">现代操作系统的特点</h4>
+
+<ul>
+  <li>程序并发执行</li>
+  <li>资源共享</li>
+  <li>用户随机使用系统</li>
+</ul>
+
+<h4 id="section-2">这三者是互相联系和互相依赖的</h4>
+
+<h4 id="section-3">操作系统的重要任务之一是使用用户充分、有效地利用系统资源</h4>
+
+<h4 id="section-4">如何抽象？ &ndash; 进程</h4>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide3">
+          <header><h1 id="section-5">3.1.1 程序的并发执行</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-5">3.1.1 程序的并发执行</h1>
+
+<h4 id="section-6">程序</h4>
+
+<p>程序用来描述计算机所要完成的独立功能，并在时间上严格按前后次序相继地进行计算机操作序列集合。</p>
+
+<h4 id="section-7">程序的顺序执行</h4>
+
+<!-- begin code{} -->
+<div class="code"><pre class="brush: ruby toolbar: false gutter: true">
+Repeat iR ← M[PC]
+	pc ← pc+1
+	&lt; Execute (instructioniniR)&gt;
+Until CPU halt
+</pre></div>
+<!-- end code -->
+
+<ul>
+  <li>把一个具有独立功能的程序独占处理机直至最终结束的过程称为程序的顺序执行</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide4">
+          <header><h1 id="section-8">3.1.1 多道程序系统中的程序执行</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-8">3.1.1 多道程序系统中的程序执行</h1>
+
+<h4 id="section-9">程序顺序执行的特点</h4>
+
+<ul>
+  <li>顺序性</li>
+  <li>封闭性</li>
+  <li>可再现性</li>
+</ul>
+
+<h4 id="section-10">执行环境要求满足以下3个特点</h4>
+
+<ul>
+  <li>独立性</li>
+  <li>随机性</li>
+  <li>资源共享性</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide5">
+          <header><h1 id="concurrent">3.1.1 程序的并发性（concurrent）</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="concurrent">3.1.1 程序的并发性（concurrent）</h1>
+
+<h4 id="section-11">并发执行</h4>
+
+<ul>
+  <li>所谓并发执行，是为了增强计算机系统的处理能力和提高资源利用率所采取的一种同时操作技术。</li>
+  <li>多道程序间的并发执行</li>
+  <li>同一程序间代码的并发执行</li>
+  <li>程序的并发执行不同于程序的并行执行</li>
+</ul>
+
+<h4 id="section-12">并发执行的过程描述</h4>
+
+<!-- begin code{} -->
+<div class="code"><pre class="brush: ruby toolbar: false gutter: true">
+S0
+Cobegin
+P1;P2;...;Pn
+Coend
+</pre></div>
+<!-- end code -->
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide6">
+          <header><h1 id="section-13">3.1.1 并发执行的条件</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-13">3.1.1 并发执行的条件</h1>
+
+<blockquote>
+  <p>1966年Bernstein提出了两相邻语句S1,S2可以并发执行的条件：若一语句读的变量与另一语句写的变量没有交集，且两条语句写的变量也没有交集，那么这两条语句是可以并发的。</p>
+</blockquote>
+
+<h4 id="section-14">程序并行带来的影响</h4>
+
+<ul>
+  <li>并发执行的好处是提高系统资源利用率</li>
+  <li>并发执行的不足是导致资源的共享和竞争问题，使程序失去封闭性和可再现性</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide7">
+          <header><h1 id="section-15">3.1.1 一个并发执行的例子</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-15">3.1.1 一个并发执行的例子</h1>
+
+<!-- begin code{} -->
+<div class="code"><pre class="brush: ruby toolbar: false gutter: true">
+procedure getaddr(top)
+	begin
+		local r
+		r ← (top)
+		top ← top-1
+		return r
+	end
+
+procedure reladdr(blk)
+	begin
+		top ← top+1
+		(top) ← blk
+	end
+</pre></div>
+<!-- end code -->
+
+<p><img src="images/3/1.jpg" alt="堆栈的取数和存数过程" /></p>
+
+<h4 id="s">错误是由于两程序共享资源堆栈S导致</h4>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide8">
+          <header><h1 id="section-16">3.1.1 小结</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-16">3.1.1 小结</h1>
+
+<ul>
+  <li>由于程序的顺序性，静态性以及孤立性，用程序段作为描述其执行过程和共享资源的基本单位是不合适的</li>
+  <li>进程是描述程序的执行过程且能用来共享资源的基本单位</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide9">
+          <header><h1 id="section-17">3.1.2 进程的定义</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-17">3.1.2 进程的定义</h1>
+
+<h4 id="section-18">进程的5个定义</h4>
+
+<ul>
+  <li>进程是可以并发执行的计算部分</li>
+  <li>进程是一个独立的可以调度的活动</li>
+  <li>进程是一抽象实体，当它执行某个任务时，将要分配和释放各种资源</li>
+  <li>行为的规则叫程序，程序在处理机上执行时的活动称为进程</li>
+  <li>一个进程是一系列逐一执行的操作，而操作的确切含义则有赖于以何种详尽程序来描述进程</li>
+</ul>
+
+<h4 id="section-19">并发执行的程序在执行过程中分配和管理资源的基本单位</h4>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide10">
+          <header><h1 id="section-20">3.1.2 进程和程序</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-20">3.1.2 进程和程序</h1>
+
+<h4 id="section-21">既有区别也有联系</h4>
+
+<ul>
+  <li>进程是一个动态概念，而程序是一个静态概念</li>
+  <li>进程具有并发特征，而程序没有。进程具有并发特征的两个方面，即独立性和异步性。</li>
+  <li>进程是竞争计算机系统资源的基本单位</li>
+  <li>不同的进程可以包含同一程序</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide11">
+          <header><h1 id="section-22">3.2 进程的描述</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-22">3.2 进程的描述</h1>
+
+<ul>
+  <li>系统通过进程控制块PCB描述进程存在，并反映其变化的物理实体</li>
+  <li>进程的PCB是系统感知进程的唯一实体</li>
+  <li>进程PCB结构都是全部或部分常驻内存</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide12">
+          <header><h1 id="pcb">3.2.1 进程控制块PCB</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="pcb">3.2.1 进程控制块PCB</h1>
+
+<h4 id="pcb-1">PCB是进程存在和死亡的标志</h4>
+<p>#### PCB的内容</p>
+
+<ul>
+  <li>描述信息 进程名或进程标识号， 用户名或用户标识号， 家庭关系</li>
+  <li>控制信息 进程当前状态， 进程优先级， 程序开始地址， 各种计时信息， 通信信息</li>
+  <li>资源管理器 内存管理， 对换和覆盖信息 共享程序段，输入输出设备号， 文件系统指针</li>
+  <li>CPU现场保护结构</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide13">
+          <header><h1 id="section-23">3.2.2 进程上下文</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-23">3.2.2 进程上下文</h1>
+
+<h4 id="section-24">进程上下文实际上是进程执行过程中顺序关联的静态描述。</h4>
+
+<ul>
+  <li>每个进程执行过、执行时的以及待执行的指令和数据</li>
+  <li>在指令寄存器、堆栈、状态字寄存器的内容</li>
+</ul>
+
+<h4 id="section-25">上文</h4>
+
+<p>已执行过的进程指令和数据在相关寄存器与堆栈中的内容</p>
+
+<h4 id="section-26">正文</h4>
+
+<p>把正在执行的指令和数据在寄存器与堆栈中的内容</p>
+
+<h4 id="section-27">下文</h4>
+
+<p>把待执行的指令和数据在寄存器与堆栈的内容</p>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide14">
+          <header><h1 id="section-28">3.2.2 进程上下文（2）</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-28">3.2.2 进程上下文（2）</h1>
+
+<p><img src="images/3/2.jpg" alt="进程下上文结构" /></p>
+
+<h4 id="section-29">进程的系统级上下文</h4>
+
+<ul>
+  <li>静态部分 PCB结构，地址映射表格，核心栈</li>
+  <li>动态部分 与寄存器上下文相关联</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide15">
+          <header><h1 id="unix-system-v">3.2.2 UNIX System V进程上下文</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="unix-system-v">3.2.2 UNIX System V进程上下文</h1>
+
+<p><img src="images/3/3.jpg" alt="进程下上文结构" /></p>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide16">
+          <header><h1 id="section-30">3.2.3 进程上下文切换</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-30">3.2.3 进程上下文切换</h1>
+
+<h4 id="section-31">上下文切换的三个部分</h4>
+
+<ul>
+  <li>保存被切换进程的正文部分至有关存储区</li>
+  <li>操作系统进程中有关调度和资源分配程序执行</li>
+  <li>被选中进程的原来被保存的正文部分从有关存储区中取出，并送至有关寄存器与堆栈中，激活选中进程执行</li>
+</ul>
+
+<h4 id="section-32">上下文切换是一个十分耗时的过程</h4>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide17">
+          <header><h1 id="section-33">3.2.4 进程空间与大小</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-33">3.2.4 进程空间与大小</h1>
+
+<p><img src="images/3/4.jpg" alt="进程下上文结构" /> </p>
+
+<h4 id="section-34">用户模式与系统模式</h4>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide18">
+          <header><h1 id="section-35">3.3 进程状态</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-35">3.3 进程状态</h1>
+
+<p>进程的5种基本状态：</p>
+
+<ul>
+  <li>初始态</li>
+  <li>执行态</li>
+  <li>阻塞态（等待状态）</li>
+  <li>就绪态</li>
+  <li>终止态</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide19">
+          <header><h1 id="section-36">3.3.2 进程状态的转换</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-36">3.3.2 进程状态的转换</h1>
+
+<p><img src="images/3/5.jpg" alt="进程状态转换" /> </p>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide20">
+          <header><h1 id="section-37">3.4 进程控制</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-37">3.4 进程控制</h1>
+
+<h4 id="section-38">定义</h4>
+
+<ul>
+  <li>进程控制，就是系统使用一些具有特定功能的程序段来创建、撤销进程以及完成进程各状态间的转换，从而达到多进程高效率并发执行和协调、实现资源共享的目的。</li>
+</ul>
+
+<h4 id="section-39">原语</h4>
+
+<ul>
+  <li>不允许中断的指令或程序段</li>
+  <li>原语执行于系统态，用于完成操作系统某些特定功能</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide21">
+          <header><h1 id="section-40">3.4.1 进程的创建</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-40">3.4.1 进程的创建</h1>
+
+<h4 id="section-41">进程创建的两种方式</h4>
+
+<ul>
+  <li>由系统程序模块统一创建， 在批处理系统中</li>
+  <li>由父进程创建</li>
+</ul>
+
+<p><img src="images/3/6.jpg" alt="创建原语流程图" /></p>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide22">
+          <header><h1 id="section-42">3.4.1 进程的撤销</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-42">3.4.1 进程的撤销</h1>
+
+<h4 id="section-43">进程撤销的3种情况</h4>
+
+<ul>
+  <li>该进程已完成所要求的功能而正常终止</li>
+  <li>由于某种错误导致非正常终止</li>
+  <li>祖先进程要求撤销某个进程</li>
+</ul>
+
+<p><img src="images/3/7.jpg" alt="撤销原语流图" /></p>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide23">
+          <header><h1 id="section-44">3.4.2 进程的阻塞</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-44">3.4.2 进程的阻塞</h1>
+
+<p><img src="images/3/8.jpg" alt="阻塞原语图" /></p>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide24">
+          <header><h1 id="section-45">3.4.2 进程的唤醒</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-45">3.4.2 进程的唤醒</h1>
+
+<p><img src="images/3/9.jpg" alt="唤醒原语图" /></p>
+<!-- === end markdown block ===================================================== -->
+
+          </section>
+        </div>
+        
+
+
+        <div id="speaker-note" class="invisible" style="display: none;"></div>
+        <aside id="help" class="sidebar invisible" style="display: none;">
+          <table>
+            <caption>Help</caption>
+            <tbody>
+              <tr>
+                <th>Move Around</th>
+                <td>&larr;&nbsp;&rarr;</td>
+              </tr>
+              <tr>
+                <th>Source File</th>
+                <td>s</td>
+              </tr>
+              <tr>
+                <th>Change Theme</th>
+                <td>t</td>
+              </tr>
+              <tr>
+                <th>Syntax Highlight</th>
+                <td>h</td>
+              </tr>
+              <tr>
+                <th>Speaker Notes</th>
+                <td>n</td>
+              </tr>
+              <tr>
+                <th>Toggle 3D</th>
+                <td>3</td>
+              </tr>
+              <tr>
+                <th>Help</th>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </aside>
+
+    </div> <!-- slides -->
+    </div>
+    
+    <!--[if lt IE 9]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">
+    </script>
+    <script>CFInstall.check({ mode: "overlay" });</script>
+    <![endif]-->
+
+    <script src="src/prettify/prettify.js" onload="prettyPrint();" defer></script>
+    <script src="js/utils.js"></script>
+  </body>
+</html>
