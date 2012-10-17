@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Chrome DevRel Team (chrome-devrel@googlegroups.com)
+                 Alex Russell (slightlyoff@chromium.org)
+                 Brad Neuberg
+-->
+
+<!-- GB: modifications for s9 template pack:
+ 
+  o removed offline manifest
+  o removed disclaimer; it's just a prototype anyway
+  o removed google analytics script code
+  o removed google maps script code
+  o removed all slides
+
+  o in js/utils.js changed line 541pp queryAll('.transitionSlide')
+ 
+     - looks for h1 (not h2) and doesn't include img (icon)
+
+  o in styles/commons.css commented out rules for li and bullets
+ 
+   li {
+    list-style: none;
+    padding: 10px 0;
+   }
+   .bullets {
+  font-size: 40px;
+  }
+  .bullets li::before {
+    content: '· ';
+  }
+-->
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" />
+    <title>操作系统</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono" rel="stylesheet" type="text/css" />
+    <link id="prettify-link" href="src/prettify/prettify.css" rel="stylesheet" disabled />
+    <link href="styles/fonts.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="styles/presentation.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="styles/common.css" rel="stylesheet" type="text/css" media="screen" />
+    <link class="theme" href="styles/default.css" rel="stylesheet" type="text/css" media="screen" />
+    <link class="theme" href="styles/moon.css" rel="stylesheet" type="text/css" media="screen" />
+    <link class="theme" href="styles/sand.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link class="theme" href="styles/sea_wave.css" rel="stylesheet" type="text/css" media="screen"/>
+  </head>
+  <body>
+    <div id="flex-container">
+    <nav id="helpers">
+      <button title="Previous slide" id="nav-prev" class="nav-prev">&#8701;</button> 
+      <button title="Jump to a random slide" id="slide-no">5</button> 
+      <button title="Next slide" id="nav-next" class="nav-next">&#8702;</button>
+      <menu>
+        <button type="checkbox" data-command="toc" title="Table of Contents" class="toc">TOC</button>
+        <!-- <button type="checkbox" data-command="resources" title="View Related Resources">&#9734;</button> -->
+        <button type="checkbox" data-command="notes" title="View Slide Notes">&#9999;</button>
+        <button type="checkbox" data-command="source" title="View slide source">&#8635;</button>
+        <button type="checkbox" data-command="help" title="View Help">?</button>
+      </menu>
+    </nav>
+    <div class="slides">
+      <div id="presentation-counter">Loading...</div>
+        <div class="slide" id="landing-slide">
+          <section class="middle">
+            <p>This presentation is an HTML5 website</p>
+            <p>Press <span id="left-init-key" class="key">&rarr;</span> key to advance.</p>
+          </section>
+          <aside class="note">
+            <section>
+              Welcome! (This field is for speaker notes and commentary.)
+            </section>
+          </aside> 
+        </div>
+
+        <div class="slide" id="controls-slide">
+          <header>Slides controls</header>
+          <section>
+            <ul>
+              <li><span class="key">&larr;</span> and <span class="key">&rarr;</span> to move around.</li>
+              <li><span class="key">Ctrl/Command</span> and <span class="key">+</span> or <span class="key">-</span> to zoom in and out if slides don’t fit.</li>
+              <li><span class="key">S</span> to view page source.</li>
+              <li><span class="key">T</span> to change the theme.</li>
+              <li><span class="key">H</span> to toggle syntax highlight.</li>
+              <li><span class="key">N</span> to toggle speaker notes.</li>
+              <li><span class="key">3</span> to toggle 3D effect.</li>
+              <li><span class="key">0</span> to toggle help.</li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="slide" id="title-slide">
+          <section class="middle">
+            <hgroup>
+              <h1>
+                操作系统
+              </h1>
+              <h2>
+                处理机调度
+              </h2>
+            </hgroup>
+          </section>
+        </div>
+
+        <div class="slide" id="table-of-contents">
+          <header><h1>Agenda - Table of Contents</h1></header>
+          <section>
+            <ul id="toc-list">
+            </ul>
+          </section>
+        </div>
+
+
+        
+        <div class="slide transitionSlide" id="slide2">
+          <header><h1 id="section">4.4 调度算法</h1></header>
+          <section>
+              <!-- === begin markdown block =====================================================
+
+      generated by markdown 1.0.0 on Ruby 1.8.7 (2012-06-29) [i386-mingw32]
+                on Wed Oct 17 22:39:32 +0800 2012 with Markdown engine kramdown (0.13.8)
+                  using options { !to be done! }
+  -->
+
+<!-- _S9SLIDE_ -->
+<h1 id="section">4.4 调度算法</h1>
+
+<h4 id="section-1">本节讨论各种常用的进程调度算法和作业调度算法</h4>
+
+<ul>
+  <li>先来先服务(FCFS)调度算法</li>
+  <li>轮转法</li>
+  <li>多级反馈轮转法</li>
+  <li>优先级法</li>
+  <li>最短作业优先法</li>
+  <li>最高响应比优先法</li>
+  <li><a href="http://cpuss.codeplex.com/">开源的仿真器</a></li>
+  <li><a href="http://www.cs.usfca.edu/~galles/visualization/">算法可视化工具</a></li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide3">
+          <header><h1 id="fcfs">先来先服务(FCFS)调度算法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="fcfs">先来先服务(FCFS)调度算法</h1>
+
+<h4 id="section-2">原理</h4>
+
+<ul>
+  <li>把就绪状态的进程按进入的先后以队列方法排列</li>
+  <li>按照先来先服务的方式进行调度处理</li>
+</ul>
+
+<h4 id="section-3">优点</h4>
+
+<ul>
+  <li>看似最“公平”， 操作简单</li>
+</ul>
+
+<h4 id="section-4">缺点</h4>
+
+<ul>
+  <li>比较有利于长作业（进程），不利于短作业（进程）</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide4">
+          <header><h1 id="fcfs-1">先来先服务(FCFS)调度算法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="fcfs-1">先来先服务(FCFS)调度算法</h1>
+
+<p><img src="images/4/1.png" alt="先来先服务例子" /></p>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide5">
+          <header><h1 id="section-5">最短作业优先法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-5">最短作业优先法</h1>
+
+<h4 id="section-6">原理</h4>
+
+<ul>
+  <li>选择估计需要执行时间最短的作业投入执行</li>
+</ul>
+
+<h4 id="section-7">优点</h4>
+
+<ul>
+  <li>比FCFS改善平均周转时间和平均带权周转时间，缩短作业的等待时间
+提高系统的吞吐量</li>
+</ul>
+
+<h4 id="section-8">缺点</h4>
+
+<ul>
+  <li>对长作业非常不利，可能长时间得不到执行</li>
+  <li>未能依据作业的紧迫程度来划分执行的优先级</li>
+  <li>难以准确估计作业（进程）的执行时间，从而影响调度性能</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide6">
+          <header><h1 id="fcfssjpf">FCFS与SJ(P)F的对比</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="fcfssjpf">FCFS与SJ(P)F的对比</h1>
+
+<p><img src="images/4/2.png" alt="FCFS与SJ(P)F的对比" /></p>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide7">
+          <header><h1 id="section-9">高优先权优先调度算法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-9">高优先权优先调度算法</h1>
+
+<h4 id="section-10">原理</h4>
+
+<ul>
+  <li>FCFS算法与SJF算法都是比较片面的调度算法。</li>
+  <li>FCFS算法只考虑作业的等候时间，而忽视了作业的等待时间。</li>
+  <li>而SJF恰好与之相反，它只考虑用户估计的作业计算时间而忽视了作业的等待时间。</li>
+  <li>高优先权优先调度算法是介乎两者之间的折衷策略。</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide8">
+          <header><h1 id="section-11">高优先权优先调度算法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-11">高优先权优先调度算法</h1>
+
+<h4 id="section-12">优先权调度算法的类型</h4>
+<ul>
+  <li>非抢占式优先权算法，主要用于批处理系统中</li>
+  <li>抢占式优先权算法， 常用于要求比较严格的实时系统，以及对性能要求较高的批处理和分时系统中</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide9">
+          <header><h1 id="section-13">高优先权优先调度算法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-13">高优先权优先调度算法</h1>
+
+<h4 id="section-14">根据优先权的类型</h4>
+
+<ul>
+  <li>静态优先数：进程类型、进程对资源的需求 、用户要求</li>
+  <li>静态优先数优点：简单易行，缺点：不精确，可能饿死</li>
+  <li>动态优先数 随时间推进，等待作业或进程的优先数提高，执行作业或进程的优先数降低，以抢占式实现</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide10">
+          <header><h1 id="section-15">最高响应比优先法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-15">最高响应比优先法</h1>
+
+<ul>
+  <li>高响应比实际就是以响应比作为动态优先数进行调度的</li>
+  <li>响应比=作业响应时间/作业估计计算时间</li>
+  <li>响应比=1+作业等待时间/作业估计算时间</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide11">
+          <header><h1 id="sjffcfshrrf">实例：SJF、FCFS和HRRF</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="sjffcfshrrf">实例：SJF、FCFS和HRRF</h1>
+
+<ul>
+  <li><img src="images/4/3.png" alt="SJF、FCFS和HRRF" /></li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide12">
+          <header><h1 id="sjf">解答 SJF</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="sjf">解答 SJF</h1>
+
+<ul>
+  <li>作业调度顺序为作业A、C、D、B</li>
+  <li>T= (20+25-10+35-15+50-5)/4=25</li>
+  <li>W=(20/20+15/5+20/10+45/15)/4=2.25</li>
+  <li>其中 T代表平均作业周转时间，W代表平均带权作业周转时间</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide13">
+          <header><h1 id="fcfs-2">解答 FCFS</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="fcfs-2">解答 FCFS</h1>
+
+<ul>
+  <li>作业调度顺序为作业A、B、C、D</li>
+  <li>T=(20+35-5+40-10+50-15)/4=28.75</li>
+  <li>W=(20/20+35/15+30/5+35/10)/4=3.125</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide14">
+          <header><h1 id="hrrf">解答 HRRF</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="hrrf">解答 HRRF</h1>
+
+<ul>
+  <li>开始时只有作业A，作业A选中，执行时间20</li>
+  <li>作业A执行后,响应比依次1+15/5, 1+10/5，1+5/10，作业C选中，执行时间5</li>
+  <li>作业C执行后，响应比依次是1+20/15, 1+10/10，作业B选 中，执行时间15</li>
+  <li>作业B执行后，作业D选中，执行时间10</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide15">
+          <header><h1 id="hrrf-1">解答 HRRF</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="hrrf-1">解答 HRRF</h1>
+
+<ul>
+  <li>作业调度次序为A, C, B, D</li>
+  <li>T=(20+25-10+40-5+50-15)/4=26.25</li>
+  <li>W=(20/20+15/5+35/15+35/10)/4=2.46</li>
+  <li>可见，HRRF性能界于SJF和FCFS之间</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide16">
+          <header><h1 id="section-16">基于时间片的轮转调度算法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-16">基于时间片的轮转调度算法</h1>
+
+<h4 id="section-17">原理</h4>
+
+<ul>
+  <li>前面3种算法主要用于宏观调度，说明怎样选择一个进程或作业开始运行，开始运行后的作法都相同，即运行到结束或阻塞，阻塞结束时等待当前进程放弃CPU 。</li>
+  <li>本算法主要用于微观调度，说明怎样并发运行，即切换的方式；设计目标是提高资源利用率。</li>
+  <li>其基本思路是通过时间片轮转，提高进程并发性和响应时间特性，从而提高资源利用率；</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide17">
+          <header><h1 id="section-18">基于时间片的轮转调度算法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-18">基于时间片的轮转调度算法</h1>
+
+<h4 id="section-19">原理</h4>
+
+<ul>
+  <li>时间片轮转算法基本原理</li>
+  <li>将系统中所有的就绪进程按照FCFS原则，排成一个队列。</li>
+  <li>每次调度时将CPU分派给队首进程，让其执行一个时间片。时间片的长度从几个ms到几百ms</li>
+  <li>在一个时间片结束时，发生时钟中断。</li>
+  <li>调度程序据此暂停当前进程的执行，将其送到就绪队列的末尾，并通过上下文切换执行当前的队首进程。</li>
+  <li>进程可以未使用完一个时间片，就出让CPU（如阻塞）。</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide18">
+          <header><h1 id="section-20">基于时间片的轮转调度算法</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-20">基于时间片的轮转调度算法</h1>
+
+<h4 id="section-21">时间片大小的确定</h4>
+
+<h4 id="section-22">时间片长度变化的影响</h4>
+
+<ul>
+  <li>过长－&gt;退化为FCFS算法，进程在一个时间片内都执行完，响应时间长。</li>
+  <li>过短－&gt;用户的一次请求需要多个时间片才能处理完，上下文切换次数增加，响应时间长。</li>
+</ul>
+
+<h4 id="section-23">对时间大小的划分：</h4>
+<ul>
+  <li>时间片略大于一次典型的交互所需的时间.</li>
+</ul>
+
+<h4 id="section-24">时间片长度的影响因素：</h4>
+<ul>
+  <li>就绪进程的数目：数目越多，时间片越小（当响应时间一定时）</li>
+  <li>系统的处理能力：应当使用户输入通常在一个时间片内能处理完，否则使响应时间，平均周转时间和平均带权周转时间延长。</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide19">
+          <header><h1 id="multiple-level-queue">多级队列算法(Multiple-level Queue)</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="multiple-level-queue">多级队列算法(Multiple-level Queue)</h1>
+
+<ul>
+  <li>本算法引入多个就绪队列，通过各队列的区别对待，达到一个综合的调度目标；</li>
+  <li>根据作业或进程的性质或类型的不同，将就绪队列再分为若干个子队列。</li>
+  <li>每个作业固定归入一个队列。</li>
+  <li>各队列的不同处理：不同队列可有不同的优先级、时间片长度、调度策略等。如：系统进程、用户交互进程、批处理进程等</li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide20">
+          <header><h1 id="multiple-level-queue-1">多级队列算法(Multiple-level Queue)</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="multiple-level-queue-1">多级队列算法(Multiple-level Queue)</h1>
+
+<ul>
+  <li><img src="images/4/4.png" alt="多级队列算法" /></li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide21">
+          <header><h1 id="multiple-level-queue-2">多级队列算法(Multiple-level Queue)</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="multiple-level-queue-2">多级队列算法(Multiple-level Queue)</h1>
+
+<ul>
+  <li><img src="images/4/5.png" alt="多级队列算法" /></li>
+</ul>
+
+
+
+          </section>
+        </div>
+        
+        <div class="slide transitionSlide" id="slide22">
+          <header><h1 id="section-25">各种调度策略的特点</h1></header>
+          <section>
+              <!-- _S9SLIDE_ -->
+<h1 id="section-25">各种调度策略的特点</h1>
+
+<ul>
+  <li><img src="images/4/6.png" alt="各种调度策略的特点" /></li>
+</ul>
+<!-- === end markdown block ===================================================== -->
+
+          </section>
+        </div>
+        
+
+
+        <div id="speaker-note" class="invisible" style="display: none;"></div>
+        <aside id="help" class="sidebar invisible" style="display: none;">
+          <table>
+            <caption>Help</caption>
+            <tbody>
+              <tr>
+                <th>Move Around</th>
+                <td>&larr;&nbsp;&rarr;</td>
+              </tr>
+              <tr>
+                <th>Source File</th>
+                <td>s</td>
+              </tr>
+              <tr>
+                <th>Change Theme</th>
+                <td>t</td>
+              </tr>
+              <tr>
+                <th>Syntax Highlight</th>
+                <td>h</td>
+              </tr>
+              <tr>
+                <th>Speaker Notes</th>
+                <td>n</td>
+              </tr>
+              <tr>
+                <th>Toggle 3D</th>
+                <td>3</td>
+              </tr>
+              <tr>
+                <th>Help</th>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </aside>
+
+    </div> <!-- slides -->
+    </div>
+    
+    <!--[if lt IE 9]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">
+    </script>
+    <script>CFInstall.check({ mode: "overlay" });</script>
+    <![endif]-->
+
+    <script src="src/prettify/prettify.js" onload="prettyPrint();" defer></script>
+    <script src="js/utils.js"></script>
+  </body>
+</html>

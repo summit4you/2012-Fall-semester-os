@@ -1,0 +1,25 @@
+<html>
+<head>
+<script src="raphael-min.js"></script>
+<script>
+window.onload = function () {
+       var paper = Raphael(10, 50, 320, 200);
+
+		// translate 100, 100, rotate 45бу, translate -100, 0
+		var el = paper.rect(10, 20, 300, 200);
+		el.transform("t100,100r45t-100,0");
+		// if you want you can append or prepend transformations
+		el.transform("...t50,50");
+		el.transform("s2...");
+		// or even wrap
+		el.transform("t50,50...t-50-50");
+		// to reset transformation call method with empty string
+		el.transform("");
+};
+    
+</script>
+</head>
+<body>
+
+</body>
+</html>
